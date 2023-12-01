@@ -1,12 +1,13 @@
 import os
-from screencapture import TetrisAI
+from screencapture import ScreenCap
+from controller import Controller
 from PIL import Image
 
 
 def testNextPiece():
     
     directory = os.fsencode('../tetris/images/NextPiece')
-    ai = TetrisAI()
+    ai = ScreenCap()
 
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
@@ -17,3 +18,13 @@ def testNextPiece():
         print("the next piece is: " + str(ai.determinePiece(nextPieceColor)))
 
 testNextPiece()
+
+
+def testController():
+    controller = Controller()
+    ##controller.runAI()
+    ##controller.hands()
+    test = []
+    test.extend(['up' for i in range(100)])
+    test.append(['space'])
+    ##controller.executePath(test)

@@ -16,7 +16,7 @@ class Pieces:
     LINE = 'CYAN Line Piece'
     SQUARE = 'Gold Square Piece'
 
-class TetrisAI:
+class ScreenCap:
 
     ## images to be taken
     gameState = None 
@@ -42,7 +42,6 @@ class TetrisAI:
     def takeImage(self): 
         
         global gameState, nextPiece, scoreImg, score
-        time.sleep(1)
 
         ## gameState imgSize is 250 x 470
         ## this version of tetris is 10 x 20 blocks so each block is about 25 pixels
@@ -72,8 +71,8 @@ class TetrisAI:
         return 'ERROR: idk'
     
 # testing 
-ai = TetrisAI()
-ai.takeImage() 
+sc = ScreenCap()
+## sc.takeImage() 
 
 
     ## reading the images
