@@ -13,6 +13,7 @@ def testNextPiece():
         print(filename)
         im = Image.open('../tetris/images/NextPiece/' + str(filename), 'r')
         nextPieceColor = im.getpixel((55, 50))
+        print(nextPieceColor)
         print("the next piece is: " + str(ai.determinePiece(nextPieceColor)))
 
-##testNextPiece()
+testNextPiece()
