@@ -6,54 +6,81 @@ import time
   
 from PIL import ImageGrab, Image
 import pytesseract
-  
-gameState = None 
-scoreImg = None
-nextPiece = None
-score = None
 
-## setting up piece identification by RGB value
-colors = {}
-colors[(0, 0, 244, 255)] = 'Navy Blue L piece'
-colors[(186, 39, 245, 255)] = 'Purple L piece'
-colors[(127, 201, 249, 255)] = 'Cyan step piece'
-colors[(116, 250, 76, 255)] = 'light green step piece'
-colors[(255, 254, 84, 255)] = 'yellow T piece'
-colors[(236, 112, 45, 255)] = 'orange line piece'
-colors[(233, 51, 35, 255)] = 'red square piece'
+class Pieces:
+    GOLDL = 'Gold L Piece' 
+    PURPLEL = 'Purple L Piece'
+    CYANSTEP = 'Cyan Step Piece'
+    REDSTEP = 'Red Step Piece'
+    PINKT = 'Pink T Piece'
+    LINE = 'Orange Line Piece'
+    SQUARE = 'Green Square Piece'
 
-## grabs images of gameState, nextPiece, and score
-def takeImage(): 
-    global gameState, nextPiece, scoreImg, score
-    time.sleep(1)
+class TetrisAI:
 
-    ## width: 385 pixels, height: 715
-    ## this version of tetris is 10 x 18 blocks so each block is about 39-40 pixels
-    gameState = ImageGrab.grab(bbox = (325, 155, 710, 860)) 
+    ## images to be taken
+    gameState = None 
+    scoreImg = None
+    nextPiece = None
 
-    ## this is a 250 x 150 image
-    nextPiece = ImageGrab.grab(bbox =(850, 150, 1100, 300)) 
+    # values
+    score = None
 
-    ## nextpiece is also straightforward, just going to get the color from the middle pixel and
-    ## then figure out the piece since each piece is its own color
-    nextPieceColor = nextPiece.getpixel((125, 75))
-    print("the next piece is: " + colors[nextPieceColor])
+    ## setting up piece identification by RGB value
+    ## note: line piece RGB value is not orange because its only one that has a 
+    ## shape that doesnt use the pixel I chose for next piece
+    colors = {}
+    colors[(176, 156, 70, 255)] = Pieces.GOLDL
+    colors[(81,63,166,255)] = Pieces.PURPLEL
+    colors[(92, 178, 135, 255)] = Pieces.CYANSTEP
+    colors[(182 ,53 ,61 ,255)] = Pieces.REDSTEP
+    colors[(164, 62, 154, 255)] = Pieces.PINKT
+    colors[(0, 1, 3, 255)] = Pieces.LINE
+    colors[(180, 218, 106, 255)] = Pieces.SQUARE
 
-    scoreImg = ImageGrab.grab(bbox =(1000, 545, 1200, 600)) 
-    ## score is easy, using pytesseract to get the number from the image
-    score = int(pytesseract.image_to_string(scoreImg, config='--psm 6'))
-    print('the current score is: ' + str(score))
+    ## grabs images of gameState, nextPiece, and score
+    ## resolution = 1980 x 1080
+    def takeImage(self): 
+        
+        global gameState, nextPiece, scoreImg, score
+        time.sleep(1)
 
-  
+        ## gameState imgSize is 250 x 470
+        ## this version of tetris is 10 x 20 blocks so each block is about 25 pixels
+        gameState = ImageGrab.grab(bbox = (595, 230, 845, 725)) 
+        ##gameState.show()
+
+        ## this is a 100 x 350 image
+        nextPiece = ImageGrab.grab(bbox =((875, 250, 975, 600))) 
+        ##nextPiece.show()
+
+        ## going to keep nextpiece simple for now and just look at first next piece
+        ## just get pixel color then figure out the piece since each piece is its own color
+        nextPieceColor = nextPiece.getpixel((50, 40))
+        print("the next piece is: " + self.determinePiece(nextPieceColor))
+
+        scoreImg = ImageGrab.grab(bbox =(875, 650, 975, 700)) 
+        scoreImg.show()
+        ## score is easy, using pytesseract to get the number from the image
+        score = pytesseract.image_to_string(scoreImg, config='--psm 6')
+        if '\n' in score:
+            score = score[0:len(score)-1]
+        print('the current score is: ' + str(score))
+
+    def determinePiece(self, rgba):
+        for color in self.colors:
+            if (abs(rgba[0] - color[0]) < 20) and (abs(rgba[1] - color[1]) < 20) and (abs(rgba[2] - color[2]) < 20):
+                return self.colors[color]
+    
 # testing 
-takeImage() 
-gameState.show()
+ai = TetrisAI()
+ai.takeImage() 
 
 
-## reading the images
+    ## reading the images
 
-## gamestate is going to be hardest, going to need to map out a pixel from each square in the grid
-## and then use the colors to reconstruct where all the pieces are
+    ## gamestate is going to be hardest, going to need to map out a pixel from each square in the grid
+    ## and then use the colors to reconstruct where all the pieces are
 
 
 
