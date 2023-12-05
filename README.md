@@ -8,7 +8,7 @@ Current Status:
 
 Project RunDown:
 Tetris AI that plays the game for you! 
-Will be comparing two methods, search algorithms vs reinforcement learning
+Will be comparing two methods, search algorithms vs reinforcement learning, built from scratch
 
 Program Functionality:
 - Continuously takes images of game state using PIL
