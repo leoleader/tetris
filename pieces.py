@@ -12,12 +12,15 @@ class Pieces:
   
 class TetrisPiece(ABC): 
 
-    def __init__(self):
+    def __init__(self, root=(0,0), rotation=0):
         self.piece = None
-        self.rotate = 0
-        self.root_x = 0
-        self.root_y = 0
-        self.shape = []
+        self.shapes = []
+        self.curr_shape = None
+
+        self.rotate = rotation
+        self.root_x = root[0]
+        self.root_y = root[1]
+
   
     @abstractmethod
     def rotatePiece(self): 
@@ -30,10 +33,26 @@ class TetrisPiece(ABC):
     @abstractmethod
     def moveleft(self):
         self.root_x -= 1
+    
+    @abstractmethod
+    def updateX(self, x):
+        self.root_x = x
+
+    @abstractmethod
+    def updateY(self, y):
+        self.root_y = y
 
     @abstractmethod
     def moveright(self):
         self.root_y += 1
+    
+    @abstractmethod
+    def getPieceLocations(self):
+        locations = []
+        for thing in self.shape:
+            locations.append((self.root_x + thing[0], self.root_y + thing[1]))
+        return locations
+    
     
     @abstractmethod
     def printPiece(self):
@@ -57,6 +76,10 @@ class Square(TetrisPiece):
         super().__init__()
         self.piece = Pieces.SQUARE
         self.shape = [(0,0), (0,1), (1,0), (1,1)]
+        self.shapes = [[(0,0), (0,1), (1,0), (1,1)],
+                       [(0,0), (0,1), (1,0), (1,1)],
+                       [(0,0), (0,1), (1,0), (1,1)],
+                       [(0,0), (0,1), (1,0), (1,1)]]
   
     # overriding abstract method 
     def rotatePiece(self): 
@@ -68,8 +91,17 @@ class Square(TetrisPiece):
     def moveright(self):
         return super().moveright()
     
+    def updateX(self, x):
+        return super().updateX(x)
+    
+    def updateY(self, y):
+        return super().updateY(y)
+    
     def printPiece(self):
         return super().printPiece()
+    
+    def getPieceLocations(self):
+        return super().getPieceLocations()
 
 ## PurpleL
 class PurpleL(TetrisPiece): 
@@ -77,7 +109,11 @@ class PurpleL(TetrisPiece):
     def __init__(self):
         super().__init__()
         self.piece = Pieces.PURPLEL
-        self.shape = [(0,0), (0, 1), (0, -1), (-1,-1)]
+        self.shapes = [[(0,0), (0, 1), (0, -1), (-1,-1)],
+                       [(0,0), (1,0), (-1,0), (-1,1)],
+                       [(0,0), (0, -1), (0, 1), (1,1)],
+                       [(0,0), (-1, 0), (1, 0), (1,-1)]]
+        self.shape = self.shapes[self.rotate]
   
     # overriding abstract method 
     def rotatePiece(self): 
@@ -91,14 +127,24 @@ class PurpleL(TetrisPiece):
             self.shape = [(0,0), (0, 1), (0, -1), (-1,-1)]
         self.rotate = (self.rotate + 1) % 4
     
+    
     def moveleft(self):
         return super().moveleft()
     
     def moveright(self):
         return super().moveright()
     
+    def updateX(self, x):
+        return super().updateX(x)
+    
+    def updateY(self, y):
+        return super().updateY(y)
+    
     def printPiece(self):
         return super().printPiece()
+    
+    def getPieceLocations(self):
+        return super().getPieceLocations()
 
 ## Orange L
 class OrangeL(TetrisPiece): 
@@ -106,14 +152,18 @@ class OrangeL(TetrisPiece):
     def __init__(self):
         super().__init__()
         self.piece = Pieces.ORGL
-        self.shape = [(0,0), (0, 1), (0, -1), (-1, 1)]
+        self.shapes = [[(0,0), (0, 1), (0, -1), (-1, 1)],
+                       [(0,0), (1,0), (-1,0), (1,1)],
+                       [(0,0), (0, -1), (0, 1), (1,-1)],
+                       [(0,0), (-1, 0), (1, 0), (-1,-1)]]
+        self.shape = self.shapes[self.rotate]
   
     # overriding abstract method 
     def rotatePiece(self): 
         if self.rotate == 0:
             self.shape = [(0,0), (1,0), (-1,0), (1,1)]
         elif self.rotate == 1:
-            self.shape = [(0,0), (0, -1), (0, 1), (1,-11)]
+            self.shape = [(0,0), (0, -1), (0, 1), (1,-1)]
         elif self.rotate == 2:
             self.shape = [(0,0), (-1, 0), (1, 0), (-1,-1)]
         elif self.rotate == 3:
@@ -126,8 +176,17 @@ class OrangeL(TetrisPiece):
     def moveright(self):
         return super().moveright()
     
+    def updateX(self, x):
+        return super().updateX(x)
+    
+    def updateY(self, y):
+        return super().updateY(y)
+    
     def printPiece(self):
         return super().printPiece()
+    
+    def getPieceLocations(self):
+        return super().getPieceLocations()
 
 ## GreenStep
 class GreenStep(TetrisPiece): 
@@ -135,7 +194,11 @@ class GreenStep(TetrisPiece):
     def __init__(self):
         super().__init__()
         self.piece = Pieces.GREENSTEP
-        self.shape = [(0,0), (0, -1), (-1, 0), (-1, 1)]
+        self.shapes = [[(0,0), (0, -1), (-1, 0), (-1, 1)],
+                       [(0,0), (-1,0), (0,1), (1,1)],
+                       [(0,0), (0, 1), (1, 0), (1,-1)],
+                       [(0,0), (1, 0), (0, -1), (-1,-1)]]
+        self.shape = self.shapes[self.rotate]
   
     # overriding abstract method 
     def rotatePiece(self): 
@@ -155,8 +218,17 @@ class GreenStep(TetrisPiece):
     def moveright(self):
         return super().moveright()
     
+    def updateX(self, x):
+        return super().updateX(x)
+    
+    def updateY(self, y):
+        return super().updateY(y)
+    
     def printPiece(self):
         return super().printPiece()
+    
+    def getPieceLocations(self):
+        return super().getPieceLocations()
 
 ## RedStep
 class RedStep(TetrisPiece): 
@@ -164,7 +236,11 @@ class RedStep(TetrisPiece):
     def __init__(self):
         super().__init__()
         self.piece = Pieces.REDSTEP
-        self.shape = [(0,0), (0, 1), (-1, 0), (-1, -1)]
+        self.shapes = [[(0,0), (0, 1), (-1, 0), (-1, -1)],
+                       [(0,0), (0, 1), (-1, 1), (1, 0)],
+                       [(0,0), (1, 0), (1,1), (0, -1)],
+                       [(0,0), (0, -1), (1, -1), (-1, 0)]]
+        self.shape = self.shapes[self.rotate]
   
     # overriding abstract method 
     def rotatePiece(self): 
@@ -184,8 +260,17 @@ class RedStep(TetrisPiece):
     def moveright(self):
         return super().moveright()
     
+    def updateX(self, x):
+        return super().updateX(x)
+    
+    def updateY(self, y):
+        return super().updateY(y)
+    
     def printPiece(self):
         return super().printPiece()
+    
+    def getPieceLocations(self):
+        return super().getPieceLocations()
 
 ## Pink T
 class PinkT(TetrisPiece): 
@@ -194,6 +279,11 @@ class PinkT(TetrisPiece):
         super().__init__()
         self.piece = Pieces.PINKT
         self.shape = [(0,0), (0, -1), (0, 1), (-1, 0)]
+        self.shapes = [[(0,0), (0, -1), (0, 1), (-1, 0)],
+                       [(0,0), (1, 0), (0, 1), (-1, 0)],
+                       [(0,0), (1, 0), (0, 1), (0, -1)],
+                       [(0,0), (0, -1), (-1, 0), (1, 0)]]
+        self.shape = self.shapes[self.rotate]
   
     # overriding abstract method 
     def rotatePiece(self): 
@@ -213,17 +303,32 @@ class PinkT(TetrisPiece):
     def moveright(self):
         return super().moveright()
     
+    def updateX(self, x):
+        return super().updateX(x)
+    
+    def updateY(self, y):
+        return super().updateY(y)
+    
     def printPiece(self):
         return super().printPiece()
+    
+    def getPieceLocations(self):
+        return super().getPieceLocations()
 
 
-## Pink T
+## Line is built so that root point is stationary even if when rotated is no 
+## longer contained in piece
 class Line(TetrisPiece): 
 
     def __init__(self):
         super().__init__()
         self.piece = Pieces.LINE
         self.shape = [(0,0), (0, 1), (0, 2), (0, 3)]
+        self.shapes = [[(0,0), (0, 1), (0, 2), (0, 3)],
+                       [(0,2), (-1, 2), (1, 2), (2, 2)],
+                       [(1,0), (1, 1), (1, 2), (1, 3)],
+                       [(0,1), (-1, 1), (1, 1), (2, 1)]]
+        self.shape = self.shapes[self.rotate]
   
     # overriding abstract method 
     def rotatePiece(self): 
@@ -243,5 +348,14 @@ class Line(TetrisPiece):
     def moveright(self):
         return super().moveright()
     
+    def updateX(self, x):
+        return super().updateX(x)
+    
+    def updateY(self, y):
+        return super().updateY(y)
+    
     def printPiece(self):
         return super().printPiece()
+    
+    def getPieceLocations(self):
+        return super().getPieceLocations()

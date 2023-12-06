@@ -1,6 +1,6 @@
 from PIL import ImageGrab
 import pytesseract
-from pieces import Pieces
+import pieces
 
 
 ## screencap on initialization shouldn't really do anything
@@ -15,14 +15,14 @@ class ScreenCap:
 
     ## setting up piece identification by RGB value
     colors = {}
-    colors[(170, 104, 61, 255)] = Pieces.ORGL
-    colors[(81,63,166,255)] = Pieces.PURPLEL
-    colors[(142, 179, 73, 255)] = Pieces.GREENSTEP
-    colors[(182 ,53 ,61 ,255)] = Pieces.REDSTEP
-    colors[(164, 62, 154, 255)] = Pieces.PINKT
-    colors[(92, 177, 135, 255)] = Pieces.LINE
-    colors[(214, 192, 103, 255)] = Pieces.SQUARE
-    colors[(2, 2, 2, 255)] = Pieces.EMPTY
+    colors[(170, 104, 61, 255)] = pieces.OrangeL()
+    colors[(81,63,166,255)] = pieces.PurpleL()
+    colors[(142, 179, 73, 255)] = pieces.GreenStep()
+    colors[(182 ,53 ,61 ,255)] = pieces.RedStep()
+    colors[(164, 62, 154, 255)] = pieces.PinkT()
+    colors[(92, 177, 135, 255)] = pieces.Line()
+    colors[(214, 192, 103, 255)] = pieces.Square()
+    colors[(2, 2, 2, 255)] = pieces.Pieces.EMPTY
 
     ## grabs images of gameState, nextPiece, and score
     ## then uses helper methods / libraries to get data from images
@@ -40,10 +40,10 @@ class ScreenCap:
         nextPieceColor = self.nextPieceImg.getpixel((55, 50))
         ## accounting for line being positioned differently than rest
         if (nextPieceColor[0] < 10) and (nextPieceColor[0] < 10) and (nextPieceColor[0] < 10):
-            nextPiece = Pieces.LINE
+            nextPiece = pieces.Line()
         else:
             nextPiece = self.determinePiece(nextPieceColor)
-        print("the next piece is: " + nextPiece)
+        print("the next piece is: " + str(nextPiece.piece))
 
         self.scoreImg = ImageGrab.grab(bbox =(875, 650, 975, 700)) 
         ## score is easy, using pytesseract to read the number from the image

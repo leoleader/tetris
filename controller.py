@@ -75,9 +75,3 @@ class Controller:
             row += '|'
             print(row)
             print('-------------------' * 2)
-
-
-
-
-controller = Controller()
-controller.runAI()
