@@ -3,7 +3,7 @@ from screencapture import ScreenCap
 from search import SearchProblem
 from controller import Controller
 from PIL import Image
-from pieces import Pieces
+from pieces import Pieces, PurpleL
 
 
 def test_next_piece():
@@ -47,7 +47,11 @@ def test_find_best_placements():
     valid_locs = search.findValidPlacements(grid, nextPiece)
     ranked_locs = search.findBestPlacement(valid_locs, nextPiece)
 
+    search.findOptimalPath(ranked_locs)
 
 
+
+#purpleL = PurpleL((1,1), 3)
+#purpleL.printPiece()
 
 test_find_best_placements()

@@ -7,7 +7,7 @@ class SearchProblem():
     def __init__(self, gameGrid, nextPiece, currentPiece, score):
         self.gameGrid = gameGrid
         self.nextPiece = nextPiece
-        self.currentPiece = currentPiece
+        self.currentPiece: TetrisPiece = currentPiece
         self.score = score
     
     ## basically going to overlay root of shape of currnet piece on each square in grid 
@@ -20,11 +20,9 @@ class SearchProblem():
             if rotation > 0:
                 currentPiece.rotatePiece()
             for key in gameGrid:
-                print('yuh')
                 currentPiece.updateX(key[0])
                 currentPiece.updateY(key[1])
                 piece_coords = currentPiece.getPieceLocations()
-                print(piece_coords)
                 valid = True
                 floor = False
                 ## determining if piece location valid, (not overlapping with other pieces, in grid boundaries, has floor)
@@ -120,18 +118,39 @@ class SearchProblem():
             j += 1
             k += 1
 
-
+    ## given state ((x, y), t), returns list of possible next states using valid actions
+    def getSuccessors(self, state):
+        successors = []
+        for action in ['left', 'right', 'down']:
+            if action == 'left':
+                pos = state[0]
+                newpos = (pos[0], pos[1] - 1)
+                piece = self.currentPiece.newPiece(newpos, state[1])
+                if piece.isValid(self.gameGrid):
+                    successors.append(((newpos, state[1]), action))
+            if action == 'right':
+                pos = state[0]
+                newpos = (pos[0], pos[1] + 1)
+                piece = self.currentPiece.newPiece(newpos, state[1])
+                if piece.isValid(self.gameGrid):
+                    successors.append(((newpos, state[1]), action))
+            if action == 'down':
+                pos = state[0]
+                newpos = (pos[0] + 1, pos[1])
+                piece = self.currentPiece.newPiece(newpos, state[1])
+                if piece.isValid(self.gameGrid):
+                    successors.append(((newpos, state[1]), action))
+        return successors
         
 
 
     ## A*. Have start pos and end pos and want find shortest path between two
     ## state represented by (path_length, ((x,y) t), [actions taken])
     ## currently possible actions simplified to left right down, (will implement hold and rotate later maybe)
-    def findOptimalPath(self, end_goals, currentPiece: TetrisPiece):
+    def findOptimalPath(self, end_goals):
 
         ## from findBestPlacement, list of all valid placements sorted by quality (heuristic)
         end_goals = end_goals
-        currentPiece = currentPiece
         solution_path = None
 
         while solution_path is None:
@@ -143,10 +162,9 @@ class SearchProblem():
 
             ## rotating piece to match endgoal
             rotation = end_goal[1][1]
-            path_start = []
-            while currentPiece.rotate != rotation:
-                currentPiece.rotatePiece()
-                path_start.append('up')
+            print('rotation: ' + str(rotation))
+            path_start = ['up'] * rotation
+            print(path_start)
             
             ## initializing
             start_state = (0, ((-2, 4), rotation), []) #need to figure out how doing this lol
@@ -159,11 +177,30 @@ class SearchProblem():
 
                 if frontier.empty():
                     solution_set = ["fail"]
-                    return solution_set
             
-                curr_node = frontier.pop()
+                curr_node = frontier.get()
                 explored_set.append(curr_node[1])
 
-                if curr_node == end_goal:
-                    return 'yippee'
-    
+                if curr_node[1] == end_goal[1]:
+                    solution_set = curr_node[2]
+                
+                for node in self.getSuccessors(curr_node[1]):
+                    nextnode = (curr_node[0] + 1, node[0], curr_node[2] + [node[1]])
+                    if nextnode[1] not in explored_set:
+                        nodeinfrontier = False
+                        for nodey in frontier.queue:
+                            if nodey[1] == nextnode[1]:
+                                nodeinfrontier = True
+                                if nodey[0] > nextnode[0]:
+                                    frontier.queue.remove(nodey)
+                                    frontier.put(nextnode)
+                                continue
+                        if not nodeinfrontier:
+                            frontier.put(nextnode)
+        
+            if solution_set != ['fail']:
+                solution_path = path_start + solution_set + ['space']
+                print(solution_path)
+        
+        return solution_path
+            

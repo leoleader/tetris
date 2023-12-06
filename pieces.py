@@ -53,7 +53,25 @@ class TetrisPiece(ABC):
             locations.append((self.root_x + thing[0], self.root_y + thing[1]))
         return locations
     
+    @abstractmethod
+    def newPiece(self, pos, rotate):
+        pass
     
+    ## checks that current config fits in given gameGrid
+    @abstractmethod
+    def isValid(self, gameGrid):
+        piece_coords = self.getPieceLocations()
+        valid = True
+        for coord in piece_coords:
+                    if (coord[0] < -4) or (coord[0] > 19) or (coord[1] < 0) or (coord[1] > 9):
+                        valid = False
+                    elif (coord[0] >= 0) and (coord[1] >= 0):
+                        if (gameGrid[(coord[0], coord[1])] != Pieces.EMPTY):
+                            valid = False
+        if valid:
+            return True
+        return False
+
     @abstractmethod
     def printPiece(self):
         for x in range(-3, 3):
@@ -72,8 +90,8 @@ class TetrisPiece(ABC):
 ## square piece, rotate doesn't do anything
 class Square(TetrisPiece): 
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root=(0,0), rotation=0):
+        super().__init__(root, rotation)
         self.piece = Pieces.SQUARE
         self.shape = [(0,0), (0,1), (1,0), (1,1)]
         self.shapes = [[(0,0), (0,1), (1,0), (1,1)],
@@ -102,12 +120,18 @@ class Square(TetrisPiece):
     
     def getPieceLocations(self):
         return super().getPieceLocations()
+    
+    def isValid(self, gameGrid):
+        return super().isValid(gameGrid)
+    
+    def newPiece(self, pos, rotate):
+        return Square(pos, rotate)
 
 ## PurpleL
 class PurpleL(TetrisPiece): 
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root=(0,0), rotation=0):
+        super().__init__(root, rotation)
         self.piece = Pieces.PURPLEL
         self.shapes = [[(0,0), (0, 1), (0, -1), (-1,-1)],
                        [(0,0), (1,0), (-1,0), (-1,1)],
@@ -145,12 +169,18 @@ class PurpleL(TetrisPiece):
     
     def getPieceLocations(self):
         return super().getPieceLocations()
+    
+    def isValid(self, gameGrid):
+        return super().isValid(gameGrid)
+    
+    def newPiece(self, pos, rotate):
+        return PurpleL(pos, rotate)
 
 ## Orange L
 class OrangeL(TetrisPiece): 
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root=(0,0), rotation=0):
+        super().__init__(root, rotation)
         self.piece = Pieces.ORGL
         self.shapes = [[(0,0), (0, 1), (0, -1), (-1, 1)],
                        [(0,0), (1,0), (-1,0), (1,1)],
@@ -187,12 +217,18 @@ class OrangeL(TetrisPiece):
     
     def getPieceLocations(self):
         return super().getPieceLocations()
+    
+    def isValid(self, gameGrid):
+        return super().isValid(gameGrid)
+    
+    def newPiece(self, pos, rotate):
+        return OrangeL(pos, rotate)
 
 ## GreenStep
 class GreenStep(TetrisPiece): 
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root=(0,0), rotation=0):
+        super().__init__(root, rotation)
         self.piece = Pieces.GREENSTEP
         self.shapes = [[(0,0), (0, -1), (-1, 0), (-1, 1)],
                        [(0,0), (-1,0), (0,1), (1,1)],
@@ -229,12 +265,18 @@ class GreenStep(TetrisPiece):
     
     def getPieceLocations(self):
         return super().getPieceLocations()
+    
+    def isValid(self, gameGrid):
+        return super().isValid(gameGrid)
+    
+    def newPiece(self, pos, rotate):
+        return GreenStep(pos, rotate)
 
 ## RedStep
 class RedStep(TetrisPiece): 
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root=(0,0), rotation=0):
+        super().__init__(root, rotation)
         self.piece = Pieces.REDSTEP
         self.shapes = [[(0,0), (0, 1), (-1, 0), (-1, -1)],
                        [(0,0), (0, 1), (-1, 1), (1, 0)],
@@ -271,12 +313,18 @@ class RedStep(TetrisPiece):
     
     def getPieceLocations(self):
         return super().getPieceLocations()
+    
+    def isValid(self, gameGrid):
+        return super().isValid(gameGrid)
+    
+    def newPiece(self, pos, rotate):
+        return RedStep(pos, rotate)
 
 ## Pink T
 class PinkT(TetrisPiece): 
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root=(0,0), rotation=0):
+        super().__init__(root, rotation)
         self.piece = Pieces.PINKT
         self.shape = [(0,0), (0, -1), (0, 1), (-1, 0)]
         self.shapes = [[(0,0), (0, -1), (0, 1), (-1, 0)],
@@ -314,14 +362,20 @@ class PinkT(TetrisPiece):
     
     def getPieceLocations(self):
         return super().getPieceLocations()
+    
+    def isValid(self, gameGrid):
+        return super().isValid(gameGrid)
+    
+    def newPiece(self, pos, rotate):
+        return PinkT(pos, rotate)
 
 
 ## Line is built so that root point is stationary even if when rotated is no 
 ## longer contained in piece
 class Line(TetrisPiece): 
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root=(0,0), rotation=0):
+        super().__init__(root, rotation)
         self.piece = Pieces.LINE
         self.shape = [(0,0), (0, 1), (0, 2), (0, 3)]
         self.shapes = [[(0,0), (0, 1), (0, 2), (0, 3)],
@@ -359,3 +413,9 @@ class Line(TetrisPiece):
     
     def getPieceLocations(self):
         return super().getPieceLocations()
+    
+    def isValid(self, gameGrid):
+        return super().isValid(gameGrid)
+    
+    def newPiece(self, pos, rotate):
+        return Line(pos, rotate)
