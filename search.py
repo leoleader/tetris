@@ -153,6 +153,9 @@ class SearchProblem():
         end_goals = end_goals
         solution_path = None
 
+        print('bruhhhh')
+        print(end_goals)
+
         while solution_path is None:
 
             if len(end_goals) == 0:
@@ -163,6 +166,8 @@ class SearchProblem():
             ## rotating piece to match endgoal
             rotation = end_goal[1][1]
             print('rotation: ' + str(rotation))
+            for x in range(rotation):
+                self.currentPiece.rotatePiece()
             path_start = ['up'] * rotation
             print(path_start)
             

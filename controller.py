@@ -2,6 +2,7 @@ import time
 import pyautogui
 
 from screencapture import ScreenCap
+from search import SearchProblem
 from pieces import Pieces
 
 
@@ -34,9 +35,18 @@ class Controller:
         end_time = time.time() + 60 * .5
         start_time = time.time()
         tick = 0
+        first = True
         while time.time() < end_time:  
+            time.sleep(.5)
             self.getGameState()
-            self.printGameState()
+            search = SearchProblem(self.gameGrid, self.nextPiece, self.nextPiece, self.score)
+            valid_locs = search.findValidPlacements(self.gameGrid, self.nextPiece)
+            ranked_locs = search.findBestPlacement(valid_locs, self.nextPiece)
+            if first:
+                pyautogui.press('space')
+                first = False
+            path = search.findOptimalPath(ranked_locs)
+            self.executePath(path)
             tick += 1
         print('ticks: ' + str(tick))
         print('time elapsed: ' + str(end_time - start_time))
@@ -56,8 +66,7 @@ class Controller:
     
     ## takes in a list of actions (keys) and then executes them
     def executePath(self, actions):
-        time.sleep(1)
-        pyautogui.PAUSE = .01
+        pyautogui.PAUSE = .03
         for action in actions:
             pyautogui.press(action)
 

@@ -54,4 +54,7 @@ def test_find_best_placements():
 #purpleL = PurpleL((1,1), 3)
 #purpleL.printPiece()
 
-test_find_best_placements()
+#test_find_best_placements()
+
+control = Controller()
+control.runAI()
