@@ -53,6 +53,19 @@ class ScreenCap:
         print('the current score is: ' + str(score))
         return [gameGrid, nextPiece, score]
 
+    def getNextPiece(self):
+        self.nextPieceImg = ImageGrab.grab(bbox =((875, 250, 975, 600))) 
+
+        ## going to keep nextpiece simple for now and just look at first next piece
+        ## just get pixel color then figure out the piece since each piece is its own color
+        nextPieceColor = self.nextPieceImg.getpixel((55, 50))
+        ## accounting for line being positioned differently than rest
+        if (nextPieceColor[0] < 10) and (nextPieceColor[0] < 10) and (nextPieceColor[0] < 10):
+            nextPiece = pieces.Line()
+        else:
+            nextPiece = self.determinePiece(nextPieceColor)
+        return nextPiece
+
     ## from the given rgba value determines what the next piece is
     def determinePiece(self, rgba):
         for color in self.colors:

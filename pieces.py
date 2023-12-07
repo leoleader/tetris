@@ -377,8 +377,8 @@ class Line(TetrisPiece):
     def __init__(self, root=(0,0), rotation=0):
         super().__init__(root, rotation)
         self.piece = Pieces.LINE
-        self.shape = [(0,0), (0, -1), (0, 2), (0, 3)]
-        self.shapes = [[(0,0), (0, -1), (0, 2), (0, 3)],
+        self.shape = [(0,0), (0, -1), (0, 1), (0, 2)]
+        self.shapes = [[(0,0), (0, -1), (0, 1), (0, 2)],
                        [(0,1), (-1, 1), (1, 1), (2, 1)],
                        [(1,-1), (1, 0), (1, 1), (1, 2)],
                        [(0,0), (-1, 0), (1, 0), (2, 0)]]
@@ -387,13 +387,13 @@ class Line(TetrisPiece):
     # overriding abstract method 
     def rotatePiece(self): 
         if self.rotate == 0:
-            self.shape = [(0,2), (-1, 2), (1, 2), (2, 2)]
-        elif self.rotate == 1:
-            self.shape = [(1,0), (1, 1), (1, 2), (1, 3)]
-        elif self.rotate == 2:
             self.shape = [(0,1), (-1, 1), (1, 1), (2, 1)]
+        elif self.rotate == 1:
+            self.shape = [(1,-1), (1, 0), (1, 1), (1, 2)]
+        elif self.rotate == 2:
+            self.shape = [(0,0), (-1, 0), (1, 0), (2, 0)]
         elif self.rotate == 3:
-            self.shape = [(0,0), (0, -1), (0, 1), (-1, 0)]
+            self.shape = [(0,0), (0, -1), (0, 1), (0, 2)]
         self.rotate = (self.rotate + 1) % 4
     
     def moveleft(self):

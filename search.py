@@ -59,7 +59,6 @@ class SearchProblem():
         
         ## sort ranking highest to lowest
         self.sortRanks(ranking, 0, len(ranking)-1)
-        print(ranking)
         return ranking
     
     ## using mergesort to sort, sorts in O(nlogn) 
@@ -160,8 +159,11 @@ class SearchProblem():
 
             if len(end_goals) == 0:
                 ## couldnt find any path, so just slam down a piece I guess
-                return ['space']
+                solution_path = ['couldnt find shit']
+                break
+            
             end_goal = end_goals.pop()
+            print('end_goal to find: ' + str(end_goal))
 
             ## rotating piece to match endgoal
             rotation = end_goal[1][1]
@@ -174,38 +176,52 @@ class SearchProblem():
             ## initializing
             start_state = (0, ((-2, 4), rotation), []) #need to figure out how doing this lol
             frontier = PriorityQueue()
-            frontier.put(start_state)
+            frontier.put_nowait(start_state)
             explored_set = []
             solution_set = []
 
             while len(solution_set) == 0:
 
-                if frontier.empty():
+                ## failed
+                if frontier.empty() or (len(frontier.queue) == 0) or frontier.qsize() == 0:
                     solution_set = ["fail"]
-            
-                curr_node = frontier.get()
+                    break
+        
+                curr_node = frontier.get_nowait()
                 explored_set.append(curr_node[1])
 
+                ## found
                 if curr_node[1] == end_goal[1]:
                     solution_set = curr_node[2]
+                    break
                 
-                for node in self.getSuccessors(curr_node[1]):
-                    nextnode = (curr_node[0] + 1, node[0], curr_node[2] + [node[1]])
-                    if nextnode[1] not in explored_set:
-                        nodeinfrontier = False
-                        for nodey in frontier.queue:
-                            if nodey[1] == nextnode[1]:
-                                nodeinfrontier = True
-                                if nodey[0] > nextnode[0]:
-                                    frontier.queue.remove(nodey)
-                                    frontier.put(nextnode)
-                                continue
-                        if not nodeinfrontier:
-                            frontier.put(nextnode)
+                if len(self.getSuccessors(curr_node[1])) == 0:
+                    print('could not find successors from: ' + str(curr_node[1]))
+                else:
+                    for node in self.getSuccessors(curr_node[1]):
+                        if node[1] == 'down':
+                            nextnode = (curr_node[0] + 1, node[0], curr_node[2] + [node[1]] + [node[1]])
+                        else:
+                            nextnode = (curr_node[0] + 1, node[0], curr_node[2] + [node[1]])
+                        if nextnode[1] not in explored_set:
+                            nodeinfrontier = False
+                            for nodey in frontier.queue:
+                                if nodey[1] == nextnode[1]:
+                                    nodeinfrontier = True
+                                    if nodey[0] > nextnode[0]:
+                                        frontier.queue.remove(nodey)
+                                        frontier.put(nextnode)
+                                    continue
+                            if not nodeinfrontier:
+                                frontier.put(nextnode)
         
             if solution_set != ['fail']:
                 solution_path = path_start + solution_set + ['space']
                 print(solution_path)
+                with open('/Users/dylanmccann/tetris/images/Search/searchsolutions.txt', 'a') as f:
+                    f.write(str(solution_path))
+                    f.write('\n')
+
         
         return solution_path
             

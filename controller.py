@@ -11,6 +11,7 @@ class Controller:
 
     # current gamestate values, gotten from sc.takeImage()
     gameGrid = None
+    currPiece = None
     nextPiece = None
     score = None
 
@@ -31,22 +32,25 @@ class Controller:
     def runAI(self):
         ## wait 1 second, then loop for 30 seconds
         ## currently takeImage runs at 2 frames a second LOL
-        time.sleep(1)
+        time.sleep(2)
         end_time = time.time() + 60 * .5
         start_time = time.time()
         tick = 0
-        first = True
+        ## rn just gonna ignore first piece and space it
+        self.currPiece = self.sc.getNextPiece()
+        print('starting piece is: ' + str(self.currPiece))
+        pyautogui.press('space')
+        ## begin play
         while time.time() < end_time:  
-            time.sleep(.5)
+            time.sleep(.2)
             self.getGameState()
-            search = SearchProblem(self.gameGrid, self.nextPiece, self.nextPiece, self.score)
-            valid_locs = search.findValidPlacements(self.gameGrid, self.nextPiece)
-            ranked_locs = search.findBestPlacement(valid_locs, self.nextPiece)
-            if first:
-                pyautogui.press('space')
-                first = False
+            self.sc.gameStateImg.save(f'/Users/dylanmccann/tetris/images/Search/search{tick}.png')
+            search = SearchProblem(self.gameGrid, self.nextPiece, self.currPiece, self.score)
+            valid_locs = search.findValidPlacements(self.gameGrid, self.currPiece)
+            ranked_locs = search.findBestPlacement(valid_locs, self.currPiece)
             path = search.findOptimalPath(ranked_locs)
             self.executePath(path)
+            self.currPiece = self.nextPiece
             tick += 1
         print('ticks: ' + str(tick))
         print('time elapsed: ' + str(end_time - start_time))
