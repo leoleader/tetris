@@ -6,6 +6,8 @@ WIP! -> Will be finished before 12/15
 
 Current Status: Search problem works pretty good, ML still work in progress
 
+[First Time Working well]([https://www.google.com](https://drive.google.com/file/d/1yLJpew49aWK2GLV6rdkJCKcbWQKFBY0B/view?usp=sharing))
+
 Project RunDown:
 Tetris AI that plays the game for you! 
 Will be comparing two methods, search algorithms vs reinforcement learning, built from scratch
