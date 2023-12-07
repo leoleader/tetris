@@ -4,7 +4,7 @@ CS 4100 Final Project - Tetris AI
 
 WIP! -> Will be finished before 12/15
 
-Current Status: 
+Current Status: Search problem works pretty good, ML still work in progress
 
 Project RunDown:
 Tetris AI that plays the game for you! 
