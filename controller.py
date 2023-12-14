@@ -28,12 +28,12 @@ class Controller:
         self.nextPiece = state_vals[1]
         self.score = state_vals[2]
 
-    ## test method to run AI
-    def runAI(self):
-        ## wait 1 second, then loop for 30 seconds
+    ## test method to run AI with low gravity
+    def runAILowGrav(self):
+        ## wait 2 seconds, then loop for 30 seconds
         ## currently takeImage runs at 2 frames a second LOL
         time.sleep(2)
-        end_time = time.time() + 60 * .5
+        end_time = time.time() + 60 * 2
         start_time = time.time()
         tick = 0
         ## rn just gonna ignore first piece and space it
@@ -42,12 +42,12 @@ class Controller:
         pyautogui.press('space')
         ## begin play
         while time.time() < end_time:  
-            time.sleep(.2)
+            time.sleep(.3)
             self.getGameState()
             self.sc.gameStateImg.save(f'/Users/dylanmccann/tetris/images/Search/search{tick}.png')
             search = SearchProblem(self.gameGrid, self.nextPiece, self.currPiece, self.score)
             valid_locs = search.findValidPlacements(self.gameGrid, self.currPiece)
-            ranked_locs = search.findBestPlacement(valid_locs, self.currPiece)
+            ranked_locs = search.findBestPlacement2(valid_locs, self.currPiece)
             path = search.findOptimalPath(ranked_locs)
             self.executePath(path)
             self.currPiece = self.nextPiece
@@ -58,24 +58,21 @@ class Controller:
 
     ##########################################################################
 
-    ## testing pyautogui works (it does)
-    def hands(self):
-        pyautogui.PAUSE = .2
-        end_time = time.time() + 60 * .1
-        while time.time() < end_time:  
-            pyautogui.press('shift')
-            pyautogui.press('down')
-            pyautogui.press('down')
-            pyautogui.press('space')
     
     ## takes in a list of actions (keys) and then executes them
+    ## add feature to replace list of downs with single space press
     def executePath(self, actions):
-        pyautogui.PAUSE = .03
-        for action in actions:
-            pyautogui.press(action)
+        pyautogui.PAUSE = 0.1
+        while len(actions) > 0:
+            if 'left' in actions or 'right' in actions or 'up' in actions:
+                action = actions.pop(0)
+                pyautogui.press(action)
+            else:
+                pyautogui.press('space')
+                break
 
     
-        ## creates a simple string representation of the game board in the terminal
+    ## creates a simple string representation of the game board in the terminal
     def printGameState(self):
         for x in range(20):
             row = ''
