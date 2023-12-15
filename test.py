@@ -10,19 +10,20 @@ def test_next_piece():
     
     directory = os.fsencode('../tetris/images/NextPiece')
     sc = ScreenCap()
-    answers = [Pieces.LINE, Pieces.GREENSTEP, Pieces.ORGL, Pieces.PINKT, Pieces.PURPLEL, Pieces.REDSTEP, Pieces.SQUARE]
+    answers = {'cyanline.png': Pieces.LINE, 'greenstep.png': Pieces.GREENSTEP, 'orangel.png': Pieces.ORGL, 
+               'pinkt.png': Pieces.PINKT, 'purplel.png': Pieces.PURPLEL, 'redstep.png': Pieces.REDSTEP, 'yellowsquare.png': Pieces.SQUARE}
 
-    i = -1
     for file in os.listdir(directory):
-        i += 1
         filename = os.fsdecode(file)
         print(filename)
         im = Image.open('../tetris/images/NextPiece/' + str(filename), 'r')
-        nextPieceColor = im.getpixel((55, 50))
+        nextPieceColor = im.getpixel((105, 75))
+        im.putpixel((105, 75), (255, 31, 61))
+        #im.show()
         print(nextPieceColor)
         nextPiece = sc.determinePiece(nextPieceColor)
         print("the next piece is: " + str(nextPiece))
-        assert nextPiece == answers[i]
+        assert nextPiece.piece == answers[filename]
 
 
 def test_find_valid_placements():
@@ -50,11 +51,10 @@ def test_find_best_placements():
     search.findOptimalPath(ranked_locs)
 
 
-
 #purpleL = PurpleL((1,1), 3)
 #purpleL.printPiece()
 
 #test_find_best_placements()
-
-control = Controller()
-control.runAI()
+ 
+controller = Controller()
+controller.runAILowGrav() 

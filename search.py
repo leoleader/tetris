@@ -1,5 +1,6 @@
-from pieces import TetrisPiece, Pieces
+from pieces import TetrisPiece, Pieces, Square
 from queue import PriorityQueue
+import copy
 ## class to handle all of the search algorithm shit
 
 class SearchProblem():
@@ -56,6 +57,42 @@ class SearchProblem():
             avg_height = avg_height / 4
             rating = avg_height
             ranking.append((rating, placement))
+        
+        ## sort ranking highest to lowest
+        self.sortRanks(ranking, 0, len(ranking)-1)
+        return ranking
+    
+    ## score = avg height - # holes, 
+    def findBestPlacement2(self, placements, currentPiece: TetrisPiece):
+        ranking = []
+        for placement in placements:
+            rating = 0
+            currentPiece.updateX(placement[0][0])
+            currentPiece.updateY(placement[0][1])
+            while currentPiece.rotate != placement[1]:
+                currentPiece.rotatePiece()
+            piece_coords = currentPiece.getPieceLocations()
+            avg_height = 0
+            for coord in piece_coords:
+                avg_height += coord[0]
+            avg_height = avg_height / 4
+            rating += avg_height
+
+            ## testing for holes
+            grid2 = copy.deepcopy(self.gameGrid)
+            holes = 0
+            for coord in piece_coords:
+                grid2[coord] = Square()
+            for coord in piece_coords:
+                x = coord[0]
+                y = coord[1]
+                # checking cols
+                for row in range(x, 19):
+                    if grid2[(row, y)] == Pieces.EMPTY:
+                        holes += 1
+            rating -= holes
+            ranking.append((rating, placement))
+
         
         ## sort ranking highest to lowest
         self.sortRanks(ranking, 0, len(ranking)-1)
