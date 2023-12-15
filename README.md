@@ -1,6 +1,6 @@
 # tetris
 
-CS 4100 Final Project - Tetris AI
+# CS 4100 Final Project - Tetris AI
 
 WIP! -> Will be finished before 12/15
 
@@ -12,7 +12,7 @@ Project RunDown:
 Tetris AI that plays the game for you! 
 Will be comparing two methods, search algorithms vs reinforcement learning, built from scratch
 
-Program Functionality:
+# Program Functionality:
 - Continuously takes images of game state using PIL
 - Reads and manipulate image pixel data to pull info like
     - Current Piece
@@ -34,7 +34,7 @@ Program Functionality:
 - Converted search formulation to policy formulation
 
 
-Try it yourself! (ignore this, still WIP rn):
+# Try it yourself! (ignore this, still WIP rn):
 - In one fullscreen window pull up tetr.io
 - In another window pull up ur code editor of choice
     - Clone the repo and open locally
