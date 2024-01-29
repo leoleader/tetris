@@ -2,13 +2,12 @@
 
 # CS 4100 Final Project - Tetris AI
 
-Current Status: Search problem works pretty good, ML still work in progress
+Current Status: Search problem works well, ML still work in progress
 
-[First Time Working well](https://drive.google.com/file/d/1yLJpew49aWK2GLV6rdkJCKcbWQKFBY0B/view?usp=sharing)
+[First Time Playing](https://drive.google.com/file/d/1yLJpew49aWK2GLV6rdkJCKcbWQKFBY0B/view?usp=sharing)
 
 Project RunDown:
 Tetris AI that plays the game for you! 
-Will be comparing two methods, search algorithms vs reinforcement learning, built from scratch
 
 # Program Functionality:
 - Continuously takes images of game state using PIL
@@ -26,13 +25,13 @@ Will be comparing two methods, search algorithms vs reinforcement learning, buil
     - Optimal Path to End Location (A* Search Algorithm)
 - Converts path to series of keyboard commands and executes using pyautogui
 
-- Alternatively can use ML Method:
-- Reinforcement Learning, Trained using custom mode
-- Chosen Features: Score, Line Height, Holes, Held Piece, ...
-- Converted search formulation to policy formulation
+Reinforcement Learning:
+- Determine key heuristics to playing Tetris in addition to current basic heuristics
+- Use ML techniques to train AI to find optimal heuristic values
+- Compare performance with and without usage of ML
 
 
-# Try it yourself! (ignore this, still WIP rn):
+# Try it yourself! :
 - In one fullscreen window pull up tetr.io
 - In another window pull up ur code editor of choice
     - Clone the repo and open locally
