@@ -1,7 +1,6 @@
-# tetris
-
 # CS 4100 Final Project - Tetris AI
 
+Check out the Research Paper I wrote on this project! [BlockBot Report](https://drive.google.com/file/d/14K9M5EpdWXqcwpZvQ7l6Uhdjm4VwKEwF/view?usp=sharing)
 Current Status: Search problem works pretty good, ML still work in progress
 
 [First Time Working](https://drive.google.com/file/d/1yLJpew49aWK2GLV6rdkJCKcbWQKFBY0B/view?usp=sharing)
