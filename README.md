@@ -2,8 +2,6 @@
 
 # CS 4100 Final Project - Tetris AI
 
-WIP! -> Will be finished before 12/15
-
 Current Status: Search problem works pretty good, ML still work in progress
 
 [First Time Working well](https://drive.google.com/file/d/1yLJpew49aWK2GLV6rdkJCKcbWQKFBY0B/view?usp=sharing)
