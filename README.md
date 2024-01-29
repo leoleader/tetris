@@ -4,11 +4,10 @@
 
 Current Status: Search problem works pretty good, ML still work in progress
 
-[First Time Working well](https://drive.google.com/file/d/1yLJpew49aWK2GLV6rdkJCKcbWQKFBY0B/view?usp=sharing)
+[First Time Working](https://drive.google.com/file/d/1yLJpew49aWK2GLV6rdkJCKcbWQKFBY0B/view?usp=sharing)
 
 Project RunDown:
 Tetris AI that plays the game for you! 
-Will be comparing two methods, search algorithms vs reinforcement learning, built from scratch
 
 # Program Functionality:
 - Continuously takes images of game state using PIL
@@ -20,19 +19,19 @@ Will be comparing two methods, search algorithms vs reinforcement learning, buil
 - Uses pytesseract to get current score
 - Converts pulled gamestate info into gameState class object
 
-- Search Method: 
+Search Method: 
 - Uses gameState object and formulated search problem to find:
     - Optimal Piece Location
     - Optimal Path to End Location (A* Search Algorithm)
 - Converts path to series of keyboard commands and executes using pyautogui
 
-- Alternatively can use ML Method:
+ML:
 - Reinforcement Learning, Trained using custom mode
 - Chosen Features: Score, Line Height, Holes, Held Piece, ...
-- Converted search formulation to policy formulation
+- Find optimal heuristic values through ML techniques
 
 
-# Try it yourself! (ignore this, still WIP rn):
+# Try it yourself! :
 - In one fullscreen window pull up tetr.io
 - In another window pull up ur code editor of choice
     - Clone the repo and open locally
@@ -42,9 +41,5 @@ Will be comparing two methods, search algorithms vs reinforcement learning, buil
 - Now go back to tetr.io and play a game
 - Once the game starts the bot should kick in and start playing!
 
-NOTE: The usage of this bot to cheat in any form of competitive Tetris matches/modes is NOT condoned!
+NOTE: The usage of this bot to cheat in any form of competitive Tetris matches/modes is NOT condoned
 
-
-
-NOTE TO SELF: 
-eventually when need update requirements.txt, use pipreqs \path --force
